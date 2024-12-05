@@ -108,7 +108,7 @@ public class Day5 : IDay
                 var number = numbers[i];
                 numbers[i] = numbers[indexOfRelatedBeforeAfterNumber];
                 numbers[indexOfRelatedBeforeAfterNumber] = number;
-                return;
+                i = 0;
             }
         }
     }
