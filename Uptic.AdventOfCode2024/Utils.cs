@@ -11,4 +11,10 @@ public static class Utils
     {
         return int.Parse(s);
     }
+
+    public static T GetMiddle<T>(this List<T> list)
+    {
+        var middle = list.Count / 2;
+        return list[middle];
+    }
 }

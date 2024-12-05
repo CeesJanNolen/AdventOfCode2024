@@ -4,8 +4,9 @@ using Uptic.AdventOfCode2024;
 Console.WriteLine();
 
 var day = DateTime.Now.Day;
-const int testAActualResult = 18;
-const int testBActualResult = 9;
+const int testAActualResult = 143;
+const int testBActualResult = 123;
+
 var sw = new Stopwatch();
 Console.WriteLine($"Day {day}");
 sw.Start();
@@ -15,6 +16,8 @@ if (resultA != null)
     Console.WriteLine("A = ");
     Console.WriteLine(resultA);
 }
+Console.WriteLine($"elapsed: {sw.ElapsedMilliseconds}ms");
+sw.Restart();
 
 var resultB = Runner.RunB(day, testBActualResult);
 if (resultB != null)
