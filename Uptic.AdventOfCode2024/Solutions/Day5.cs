@@ -81,15 +81,11 @@ public class Day5 : IDay
                 var numbers = line.Split(",").Select(int.Parse).ToList();
                 var isValid = IsValidLine(numbers, rules);
                 if (isValid) continue;
-                
-                while (!IsValidLine(numbers, rules))
-                {
-                    MakeValid(numbers, rules);
-                }
+
+                MakeValid(numbers, rules);
 
                 ans += numbers.GetMiddle();
             }
-
         }
 
         return ans.ToString();
@@ -99,12 +95,14 @@ public class Day5 : IDay
     {
         for (var i = 0; i < numbers.Count; i++)
         {
-            var relatedRules = rules.TryGetValue(numbers[i], out var relatedRulesList) ? relatedRulesList : new List<int>();
+            var relatedRules = rules.TryGetValue(numbers[i], out var relatedRulesList)
+                ? relatedRulesList
+                : new List<int>();
             foreach (var relatedRule in relatedRules)
             {
                 var indexOfRelatedBeforeAfterNumber = numbers.IndexOf(relatedRule);
                 if (indexOfRelatedBeforeAfterNumber == -1 || indexOfRelatedBeforeAfterNumber >= i) continue;
-                
+
                 var number = numbers[i];
                 numbers[i] = numbers[indexOfRelatedBeforeAfterNumber];
                 numbers[indexOfRelatedBeforeAfterNumber] = number;
