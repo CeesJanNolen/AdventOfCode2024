@@ -4,8 +4,8 @@ using Uptic.AdventOfCode2024;
 Console.WriteLine();
 
 var day = DateTime.Now.Day;
-const int testAActualResult = 161;
-const int testBActualResult = 48;
+const int testAActualResult = 18;
+const int testBActualResult = 9;
 var sw = new Stopwatch();
 Console.WriteLine($"Day {day}");
 sw.Start();
