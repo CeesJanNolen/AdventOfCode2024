@@ -53,29 +53,20 @@ public class Day6 : IDay
 
     private static (int, int) GetNextPosition((int, int) currentPosition, Direction direction)
     {
-        var nextPosition = currentPosition;
-        switch (direction)
+        var nextPosition = direction switch
         {
-            case Direction.N:
-                nextPosition = (currentPosition.Item1 - 1, currentPosition.Item2);
-                break;
-            case Direction.E:
-                nextPosition = (currentPosition.Item1, currentPosition.Item2 + 1);
-                break;
-            case Direction.S:
-                nextPosition = (currentPosition.Item1 + 1, currentPosition.Item2);
-                break;
-            case Direction.W:
-                nextPosition = (currentPosition.Item1, currentPosition.Item2 - 1);
-                break;
-        }
+            Direction.N => (currentPosition.Item1 - 1, currentPosition.Item2),
+            Direction.E => (currentPosition.Item1, currentPosition.Item2 + 1),
+            Direction.S => (currentPosition.Item1 + 1, currentPosition.Item2),
+            Direction.W => (currentPosition.Item1, currentPosition.Item2 - 1),
+            _ => currentPosition
+        };
 
         return nextPosition;
     }
 
     public string PartB(List<string> lines)
     {
-        var ans = 0;
         var matrix = new char[lines.Count, lines.First().Length];
 
         var startPosition = (0, 0);
@@ -95,11 +86,7 @@ public class Day6 : IDay
         var firstPath = GuardWalkPath(matrix, startPosition).Distinct().ToList();
         
         //multi thread
-        var tasks = new List<Task<bool>>();
-        foreach (var valueTuple in firstPath)
-        {
-            tasks.Add(Task.Run(() => TryInfiniteLoop(matrix, startPosition, valueTuple)));
-        }
+        var tasks = firstPath.Select(valueTuple => Task.Run(() => TryInfiniteLoop(matrix, startPosition, valueTuple))).ToList();
 
         return tasks.Count(x => x.Result).ToString();
     }
@@ -122,10 +109,8 @@ public class Day6 : IDay
 
                 currentPos = nextPos;
                 var canAdd = visitedPositions.Add((currentPos, currentDirection));
-                if (!canAdd)
-                {
-                    return true;
-                }
+                if (canAdd) continue;
+                return true;
             }
             catch (Exception)
             {
