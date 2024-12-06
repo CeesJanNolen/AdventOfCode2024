@@ -94,18 +94,17 @@ public class Day6 : IDay
 
         var firstPath = GuardWalkPath(matrix, startPosition).Distinct().ToList();
         
+        //multi thread
+        var tasks = new List<Task<bool>>();
         foreach (var valueTuple in firstPath)
         {
-            var oldChar = matrix[valueTuple.Item1, valueTuple.Item2];
-            matrix[valueTuple.Item1, valueTuple.Item2] = '0';
-            ans += TryInfiniteLoop(matrix, startPosition) ? 1 : 0;
-            matrix[valueTuple.Item1, valueTuple.Item2] = oldChar;
+            tasks.Add(Task.Run(() => TryInfiniteLoop(matrix, startPosition, valueTuple)));
         }
 
-        return ans.ToString();
+        return tasks.Count(x => x.Result).ToString();
     }
     
-    private static bool TryInfiniteLoop(char[,] matrix, (int, int) startPosition)
+    private static bool TryInfiniteLoop(char[,] matrix, (int, int) startPosition, (int, int) newObs)
     {
         var currentPos = startPosition;
         var currentDirection = Direction.N;
@@ -115,7 +114,7 @@ public class Day6 : IDay
             var nextPos = GetNextPosition(currentPos, currentDirection);
             try
             {
-                if (matrix[nextPos.Item1, nextPos.Item2] == '#' || matrix[nextPos.Item1, nextPos.Item2] == '0')
+                if (matrix[nextPos.Item1, nextPos.Item2] == '#' || (nextPos.Item1, nextPos.Item2) == newObs)
                 {
                     currentDirection = (Direction)(((int)currentDirection + 1) % 4);
                     continue;
