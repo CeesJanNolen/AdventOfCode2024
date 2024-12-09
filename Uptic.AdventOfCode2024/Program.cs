@@ -13,6 +13,7 @@ var testResults = new Dictionary<int, Tuple<int, int>>()
     { 5, new Tuple<int, int>(143, 123) },
     { 6, new Tuple<int, int>(41, 6) },
     { 7, new Tuple<int, int>(3749, 11387) },
+    { 9, new Tuple<int, int>(1928, 2858) },
 };
 
 var sw = new Stopwatch();
