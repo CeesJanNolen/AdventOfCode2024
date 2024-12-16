@@ -4,6 +4,7 @@ using Uptic.AdventOfCode2024;
 Console.WriteLine();
 
 var day = DateTime.Now.Day;
+day = 11;
 var testResults = new Dictionary<int, Tuple<int, int>>()
 {
     { 1, new Tuple<int, int>(11, 31) },
