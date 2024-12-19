@@ -30,7 +30,7 @@ public static class Runner
         return null;
     }
 
-    public static string? RunB(int day, int testResult)
+    public static string? RunB(int day, long testResult)
     {
         var data = Input.GetInput(day);
         var sampleData = Input.GetSampleBInput(day);

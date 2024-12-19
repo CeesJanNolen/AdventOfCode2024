@@ -5,19 +5,19 @@ Console.WriteLine();
 
 var day = DateTime.Now.Day;
 day = 11;
-var testResults = new Dictionary<int, Tuple<int, int>>()
+var testResults = new Dictionary<int, Tuple<int, long>>()
 {
-    { 1, new Tuple<int, int>(11, 31) },
-    { 2, new Tuple<int, int>(2, 4) },
-    { 3, new Tuple<int, int>(161, 48) },
-    { 4, new Tuple<int, int>(18, 9) },
-    { 5, new Tuple<int, int>(143, 123) },
-    { 6, new Tuple<int, int>(41, 6) },
-    { 7, new Tuple<int, int>(3749, 11387) },
-    { 8, new Tuple<int, int>(14, 34) },
-    { 9, new Tuple<int, int>(1928, 2858) },
-    { 10, new Tuple<int, int>(36, 81) },
-    { 11, new Tuple<int, int>(55312, 81) },
+    { 1, new Tuple<int, long>(11, 31) },
+    { 2, new Tuple<int, long>(2, 4) },
+    { 3, new Tuple<int, long>(161, 48) },
+    { 4, new Tuple<int, long>(18, 9) },
+    { 5, new Tuple<int, long>(143, 123) },
+    { 6, new Tuple<int, long>(41, 6) },
+    { 7, new Tuple<int, long>(3749, 11387) },
+    { 8, new Tuple<int, long>(14, 34) },
+    { 9, new Tuple<int, long>(1928, 2858) },
+    { 10, new Tuple<int, long>(36, 81) },
+    { 11, new Tuple<int, long>(55312, 65601038650482) },
 };
 
 var sw = new Stopwatch();
