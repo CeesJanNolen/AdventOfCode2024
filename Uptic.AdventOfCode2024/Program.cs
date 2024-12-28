@@ -4,7 +4,7 @@ using Uptic.AdventOfCode2024;
 Console.WriteLine();
 
 var day = DateTime.Now.Day;
-day = 11;
+day = 12;
 var testResults = new Dictionary<int, Tuple<int, long>>()
 {
     { 1, new Tuple<int, long>(11, 31) },
@@ -18,6 +18,7 @@ var testResults = new Dictionary<int, Tuple<int, long>>()
     { 9, new Tuple<int, long>(1928, 2858) },
     { 10, new Tuple<int, long>(36, 81) },
     { 11, new Tuple<int, long>(55312, 65601038650482) },
+    { 12, new Tuple<int, long>(140, 80) },
 };
 
 var sw = new Stopwatch();

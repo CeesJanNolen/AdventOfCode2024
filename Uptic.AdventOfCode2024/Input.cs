@@ -2,8 +2,8 @@
 
 public static class Input
 {
-    // private const string BasePath = "C:\\Users\\Cees-JanNolen\\code\\Uptic.AdventOfCode2024\\Uptic.AdventOfCode2024";
-    private const string BasePath = "C:\\Users\\ceesj\\code\\AdventOfCode2024\\Uptic.AdventOfCode2024";
+    private const string BasePath = "C:\\Users\\Cees-JanNolen\\code\\Uptic.AdventOfCode2024\\Uptic.AdventOfCode2024";
+    // private const string BasePath = "C:\\Users\\ceesj\\code\\AdventOfCode2024\\Uptic.AdventOfCode2024";
 
     public static List<string> GetSampleAInput(int currentDay)
     {
