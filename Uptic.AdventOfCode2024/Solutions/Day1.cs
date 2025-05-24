@@ -16,6 +16,11 @@ public class Day1 : IDay
         list2.Sort();
 
         var ans = list1.Select((t, i) => Math.Abs(t - list2[i])).Sum();
+        
+        foreach (var i in list1)
+        {
+            
+        }
 
         return ans.ToString();
     }
