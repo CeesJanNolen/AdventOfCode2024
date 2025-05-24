@@ -132,193 +132,61 @@ public class Day12 : IDay
             }
         }
 
-        Console.WriteLine("----");
-        foreach (var valueTuple in results)
-        {
-            var sides = GetSides(valueTuple.Item2, matrix.GetLength(1), matrix.GetLength(0));
-            Console.WriteLine(
-                $"{valueTuple.Item1} - {sides} - {valueTuple.Item2.Count} - {sides * valueTuple.Item2.Count}");
-            Console.WriteLine();
-        }
-
-        Console.WriteLine("----");
-
-        var ans = results.Sum((x) => GetSides(x.Item2, matrix.GetLength(1), matrix.GetLength(0)) * x.Item2.Count);
+        var ans = results.Sum((x) => GetCorners(x.Item2) * x.Item2.Count);
 
         return ans.ToString();
     }
 
-
-    private static int GetSides(List<(int, int)> points, int maxC, int maxR)
+    private static int GetCorners(List<(int, int)> points)
     {
-        var visitedTop = new List<(int, int)>();
-        var allVisitedTop = new List<(int, int)>();
-        var visitedRight = new List<(int, int)>();
-        var allVisitedRight = new List<(int, int)>();
-        var visitedBottom = new List<(int, int)>();
-        var allVisitedBottom = new List<(int, int)>();
-        var visitedLeft = new List<(int, int)>();
-        var allVisitedLeft = new List<(int, int)>();
-
-        foreach (var point in points)
+        var cornerCandidates = new HashSet<(double, double)>();
+        foreach (var (r, c) in points)
         {
-            var r = point.Item1;
-            var c = point.Item2;
+            cornerCandidates.Add((r - 0.5, c - 0.5));
+            cornerCandidates.Add((r + 0.5, c - 0.5));
+            cornerCandidates.Add((r + 0.5, c + 0.5));
+            cornerCandidates.Add((r - 0.5, c + 0.5));
+        }
 
-            Console.WriteLine($"Checking {r}, {c}");
-            if (!points.Contains((r - 1, c)))
+        var cornerCount = 0;
+        foreach (var (cr, cc) in cornerCandidates)
+        {
+            var foundPoints = new HashSet<(int, int)>();
+            var topLeft = ((int)(cr - 0.5), (int)(cc - 0.5));
+            if (points.Contains(topLeft))
+                foundPoints.Add(topLeft);
+
+            var bottomLeft = ((int)(cr + 0.5), (int)(cc - 0.5));
+            if (points.Contains(bottomLeft))
+                foundPoints.Add(bottomLeft);
+
+            var bottomRight = ((int)(cr + 0.5), (int)(cc + 0.5));
+            if (points.Contains(bottomRight))
+                foundPoints.Add(bottomRight);
+
+            var topRight = ((int)(cr - 0.5), (int)(cc + 0.5));
+            if (points.Contains(topRight))
+                foundPoints.Add(topRight);
+
+            switch (foundPoints.Count)
             {
-                Console.WriteLine($"TOP: Adding {r}, {c} because {r - 1}, {c} is not in points");
-                if (InBounds(r, c - 1, maxR, maxC) && InBounds(r, c + 1, maxR, maxC))
+                case 1:
+                case 3:
+                    cornerCount += 1;
+                    break;
+                case 2:
                 {
-                    if (!allVisitedTop.Contains((r, c - 1)) && !allVisitedTop.Contains((r, c + 1)))
-                    {
-                        Console.WriteLine(
-                            $"TOP: Adding {r}, {c} because {r - 1}, {c} is not in points and {r}, {c - 1} and {r}, {c + 1} are not visited");
-                        visitedTop.Add((r, c));
-                    }
-                }
-                else if (InBounds(r, c - 1, maxR, maxC))
-                {
-                    if (!allVisitedTop.Contains((r, c - 1)))
-                    {
-                        Console.WriteLine(
-                            $"TOP: Adding {r}, {c} because {r - 1}, {c} is not in points and {r}, {c - 1} is not visited");
-                        visitedTop.Add((r, c));
-                    }
-                }
-                else if (InBounds(r, c + 1, maxR, maxC))
-                {
-                    if (!allVisitedTop.Contains((r, c + 1)))
-                    {
-                        Console.WriteLine(
-                            $"TOP: Adding {r}, {c} because {r - 1}, {c} is not in points and {r}, {c + 1} is not visited");
-                        visitedTop.Add((r, c));
-                    }
-                }
+                    if (foundPoints.Contains(topLeft) && foundPoints.Contains(bottomRight))
+                        cornerCount += 2;
 
+                    if (foundPoints.Contains(topRight) && foundPoints.Contains(bottomLeft))
+                        cornerCount += 2;
 
-                allVisitedTop.Add((r, c));
-            }
-
-            if (!points.Contains((r + 1, c)))
-            {
-                Console.WriteLine($"BOTTOM: Adding {r}, {c} because {r + 1}, {c} is not in points");
-                if (InBounds(r, c + 1, maxR, maxC) && InBounds(r, c - 1, maxR, maxC))
-                {
-                    if (!allVisitedBottom.Contains((r, c + 1)) &&
-                        !allVisitedBottom.Contains((r, c - 1)))
-                    {
-                        Console.WriteLine(
-                            $"BOTTOM: Adding {r}, {c} because {r + 1}, {c} is not in points and {r}, {c + 1} and {r}, {c - 1} are not visited");
-                        visitedBottom.Add((r, c));
-                    }
+                    break;
                 }
-                else if (InBounds(r, c + 1, maxR, maxC))
-                {
-                    if (!allVisitedBottom.Contains((r, c + 1)))
-                    {
-                        Console.WriteLine(
-                            $"BOTTOM: Adding {r}, {c} because {r + 1}, {c} is not in points and {r}, {c + 1} is not visited");
-                        visitedBottom.Add((r, c));
-                    }
-                }
-                else if (InBounds(r, c - 1, maxR, maxC))
-                {
-                    if (!allVisitedBottom.Contains((r, c - 1)))
-                    {
-                        Console.WriteLine(
-                            $"BOTTOM: Adding {r}, {c} because {r + 1}, {c} is not in points and {r}, {c - 1} is not visited");
-                        visitedBottom.Add((r, c));
-                    }
-                }
-
-                allVisitedBottom.Add((r, c));
-            }
-
-            if (!points.Contains((r, c - 1)))
-            {
-                Console.WriteLine($"LEFT: Adding {r}, {c} because {r}, {c - 1} is not in points");
-                if (InBounds(r + 1, c, maxR, maxC) && InBounds(r - 1, c, maxR, maxC))
-                {
-                    if (!allVisitedLeft.Contains((r + 1, c)) &&
-                        !allVisitedLeft.Contains((r - 1, c)))
-                    {
-                        Console.WriteLine(
-                            $"LEFT: Adding {r}, {c} because {r}, {c - 1} is not in points and {r + 1}, {c} and {r - 1}, {c} are not visited");
-                        visitedLeft.Add((r, c - 1));
-                    }
-                }
-                else if (InBounds(r + 1, c, maxR, maxC))
-                {
-                    if (!allVisitedLeft.Contains((r + 1, c)))
-                    {
-                        Console.WriteLine(
-                            $"LEFT: Adding {r}, {c} because {r}, {c - 1} is not in points and {r + 1}, {c} is not visited");
-                        visitedLeft.Add((r, c));
-                    }
-                }
-                else if (InBounds(r - 1, c, maxR, maxC))
-                {
-                    if (!allVisitedLeft.Contains((r - 1, c)))
-                    {
-                        Console.WriteLine(
-                            $"LEFT: Adding {r}, {c} because {r}, {c - 1} is not in points and {r - 1}, {c} is not visited");
-                        visitedLeft.Add((r, c));
-                    }
-                }
-
-
-                allVisitedLeft.Add((r, c));
-            }
-
-            if (!points.Contains((r, c + 1)))
-            {
-                Console.WriteLine($"RIGHT: Adding {r}, {c} because {r}, {c + 1} is not in points");
-                if (InBounds(r - 1, c, maxR, maxC) && InBounds(r + 1, c, maxR, maxC))
-                {
-                    if (!allVisitedRight.Contains((r - 1, c)) &&
-                        !allVisitedRight.Contains((r + 1, c)))
-                    {
-                        Console.WriteLine(
-                            $"RIGHT: Adding {r}, {c} because {r}, {c + 1} is not in points and {r - 1}, {c} and {r + 1}, {c} are not visited");
-                        visitedRight.Add((r, c));
-                    }
-                }
-                else if (InBounds(r - 1, c, maxR, maxC))
-                {
-                    if (!allVisitedRight.Contains((r - 1, c)))
-                    {
-                        Console.WriteLine(
-                            $"RIGHT: Adding {r}, {c} because {r}, {c + 1} is not in points and {r - 1}, {c} is not visited");
-                        visitedRight.Add((r, c));
-                    }
-                }
-                else if (InBounds(r + 1, c, maxR, maxC))
-                {
-                    if (!allVisitedRight.Contains((r + 1, c)))
-                    {
-                        Console.WriteLine(
-                            $"RIGHT: Adding {r}, {c} because {r}, {c + 1} is not in points and {r + 1}, {c} is not visited");
-                        visitedRight.Add((r, c));
-                    }
-                }
-
-
-                allVisitedRight.Add((r, c));
             }
         }
 
-        Console.WriteLine($"Top: {visitedTop.Count}");
-        Console.WriteLine($"Right: {visitedRight.Count}");
-        Console.WriteLine($"Bottom: {visitedBottom.Count}");
-        Console.WriteLine($"Left: {visitedLeft.Count}");
-
-        return visitedTop.Count + visitedRight.Count + visitedBottom.Count + visitedLeft.Count;
-    }
-
-    private static bool InBounds(int r, int c, int maxR, int maxC)
-    {
-        return r >= 0 && c >= 0 && r < maxR && c < maxC;
+        return cornerCount;
     }
 }
